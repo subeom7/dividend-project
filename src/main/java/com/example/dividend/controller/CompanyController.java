@@ -1,13 +1,17 @@
 package com.example.dividend.controller;
 
+import com.example.dividend.domain.CompanyEntity;
 import com.example.dividend.dto.Company;
 import com.example.dividend.service.CompanyService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 
 @RestController
@@ -19,12 +23,17 @@ public class CompanyController {
 
     @GetMapping("/autocomplete")
     public ResponseEntity<?> autoComplete(@RequestParam String keyword) {
-        return null;
+        //trie 사용하여 autocomplete 사용
+        List<String> result = this.companyService.autocomplete(keyword);
+        //like 구문 사용하여 autocomplete 사용
+//        List<String> result = this.companyService.getCompanyNamesByKeyword(keyword);
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping
-    public ResponseEntity<?> searchCompany() {
-        return null;
+    public ResponseEntity<?> searchCompany(final Pageable pageable) {
+        Page<CompanyEntity> companies = this.companyService.getAllCompany(pageable);
+        return ResponseEntity.ok(companies);
     }
 
     @PostMapping
@@ -34,6 +43,7 @@ public class CompanyController {
             throw new RuntimeException("ticker is empty");
         }
         Company company = this.companyService.save(ticker);
+        this.companyService.addAutoCompleteKeyword(company.getName());
         return ResponseEntity.ok(company);
     }
 
