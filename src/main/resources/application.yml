@@ -4,6 +4,11 @@ spring:
     username: sa
     password:
     driverClassName: org.h2.Driver
+
+  redis:
+    host: localhost
+    port: 6379
+
   h2:
     console:
       enabled: true
@@ -26,3 +31,4 @@ spring:
 scheduler:
   scrap:
     yahoo: "0 0 0 * * *"
+
