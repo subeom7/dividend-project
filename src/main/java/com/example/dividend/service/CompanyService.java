@@ -29,8 +29,8 @@ public class CompanyService {
     private final Trie trie;
 
     public Company save(String ticker) throws IOException {
-        boolean exsists = companyRepository.existsByTicker(ticker);
-        if(exsists) {
+        boolean exists = companyRepository.existsByTicker(ticker);
+        if(exists) {
             throw new RuntimeException("The ticker already exsists -> " + ticker);
         }
         return storeCompanyAndDividend(ticker);
