@@ -28,6 +28,9 @@ spring:
       port: 6379
       host: 127.0.0.1
 
+  jwt:
+    secret-key: ZGl2aWRlbmQtcHJvamVjdC1qd3Qtc2VjcmV0LWtleQ==
+
 scheduler:
   scrap:
     yahoo: "0 0 0 * * *"
