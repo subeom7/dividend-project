@@ -6,6 +6,7 @@ import com.example.dividend.domain.DividendEntity;
 import com.example.dividend.dto.Company;
 import com.example.dividend.dto.Dividend;
 import com.example.dividend.dto.ScrapedResult;
+import com.example.dividend.exception.impl.NoCompanyException;
 import com.example.dividend.repository.CompanyRepository;
 import com.example.dividend.repository.DividendRepository;
 import lombok.AllArgsConstructor;
@@ -33,7 +34,7 @@ public class FinanceService {
         log.info("search company ->" + companyName);
         //1. 회사명을 기준으로 회사 정보조회
         CompanyEntity company = this.companyRepository.findByName(companyName)
-                                        .orElseThrow(() -> new RuntimeException("존재 하지 않는 회사명 입니다"));
+                                        .orElseThrow(NoCompanyException::new);
 
         //2. 조회된 회사 id로 배당금을 조회
         List<DividendEntity> dividendEntities = this.dividendRepository.findAllByCompanyId(company.getId());
