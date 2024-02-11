@@ -4,6 +4,7 @@ import com.example.dividend.domain.CompanyEntity;
 import com.example.dividend.domain.DividendEntity;
 import com.example.dividend.dto.Company;
 import com.example.dividend.dto.ScrapedResult;
+import com.example.dividend.exception.impl.NoCompanyException;
 import com.example.dividend.repository.CompanyRepository;
 import com.example.dividend.repository.DividendRepository;
 import com.example.dividend.scraper.Scraper;
@@ -82,7 +83,7 @@ public class CompanyService {
 
     public String deleteCompany(String ticker){
         CompanyEntity company = this.companyRepository.findByTicker(ticker)
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 회사입니다"));
+                .orElseThrow(NoCompanyException::new);
 
         this.dividendRepository.deleteAllByCompanyId(company.getId());
         this.companyRepository.delete(company);
